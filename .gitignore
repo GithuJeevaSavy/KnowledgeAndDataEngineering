@@ -1,0 +1,24 @@
+# OSX files
+.DS_Store
+
+# vscode files
+.vscode
+
+# python files
+*.pyc
+__pycache__/
+.pytest_cache/
+*.egg-info/
+
+instance/
+
+# generated files
+.coverage
+htmlcov/
+dist/
+build/
+
+# Application specific files
+venv
+node_modules
+.sass-cache
