@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent {
   data = { head: { vars: [] }, results: { bindings: [] } }
+
   parking: string[] = ["Adjacent public car", "Adjacent to public &", "Car park in Cappagh", "On street parking", "Parking along public", "Parking along the pu", "Public car park on C", "Within estate"];
   pitches: string[] = ["5-a-side Soccer Pitches", "All Weather Pitch", "All weather pitch", "All weather soccer pitch", "G.A.A. Pitch", "Rugby Pitch", "Soccer Pitch"];
   surfaces: string[] = ["Concrete", "Rubber Wet-pour surface", "Tarmac", "Wood Bark Surface", "Wood Bark and Grass turf surface"];
@@ -15,33 +17,45 @@ export class HomeComponent {
   equipments: string[] = ["Basketball Hoops"];
   toiletfacilities: string[] = ["No", "Yes", "Yes- At adjacent Kno"];
   specialneeds: string[] = ["No", "Yes", " ",]
-  selectedPlayground: string = "";
+  distanceranges: number[] = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
+
+  selectedRange = -1;
+  selectedPlaygroundquery1: string = "";
+  selectedPlaygroundquery4: string = "";
   selectedSurface: string = "";
-  selectedSportsfacilities: string = "";
+  selectedSportsfacilitiesquery3: string = "";
+  selectedSportsfacilitiesquery7: string = "";
+  selectedSportsfacilitiesquery9: string = "";
   selectedToiletfacilities: string = "";
   selectedParking: string = "";
   selectedPitch: string = "";
   selectedEquipment: string = "";
   selectedSpecialneeds: string = "";
+
+
   isQueryExecuted: boolean = false;
   objectKeys = Object.keys;
 
-  questions = [
-    {
-      id: 1,
-      question: "",
-      dropdownValues: this.pitches
-    },
-    {}
+  // questions = [
+  //   {
+  //     id: 1,
+  //     question: "",
+  //     dropdownValues: this.pitches
+  //   },
+  //   {}
 
-  ];
-
+  // ];
+  distanceError = false;
   constructor() {
   }
 
   async query1clicked() {
 
-    var query1 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query1 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -58,7 +72,7 @@ export class HomeComponent {
     { SELECT ?long1 ?lat1 
         where {
         ?name a gc:Playground.
-        ?name gc:name "`+ this.selectedPlayground + `".
+        ?name gc:name "`+ this.selectedPlaygroundquery1 + `".
         ?name gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?latlon.
         ?latlon gc:longitude ?long1.
@@ -70,17 +84,23 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 2000)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   GROUP BY ?location`
 
-    var encodedQuery1 = "query=" + encodeURIComponent(query1);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery1, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
+      var encodedQuery1 = "query=" + encodeURIComponent(query1);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery1, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
   async query2clicked() {
-    var query2 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query2 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -111,18 +131,22 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 2000)
+    FILTER(?d < `+ this.selectedRange + `)
   
   }
   `
-    var encodedQuery2 = "query=" + encodeURIComponent(query2);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery2, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
-    console.log(this.data);
+      var encodedQuery2 = "query=" + encodeURIComponent(query2);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery2, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
   async query3clicked() {
-    var query3 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query3 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -142,7 +166,7 @@ export class HomeComponent {
     { SELECT ?long1 ?lat1 
         where {
         ?name a gc:SportsFacility.
-        ?name gc:name "`+ this.selectedSportsfacilities + `".
+        ?name gc:name "`+ this.selectedSportsfacilitiesquery3 + `".
         ?name gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?latlon.
         ?latlon gc:longitude ?long1.
@@ -154,18 +178,24 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 2000)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   GROUP BY ?location 
   `
 
-    var encodedQuery3 = "query=" + encodeURIComponent(query3);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery3, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
+      var encodedQuery3 = "query=" + encodeURIComponent(query3);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery3, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
   async query4clicked() {
-    var query4 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query4 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -183,7 +213,7 @@ export class HomeComponent {
     { SELECT ?long1 ?lat1 
         where {
           ?name a gc:Playground.
-          ?name gc:name "`+ this.selectedPlayground + `".
+          ?name gc:name "`+ this.selectedPlaygroundquery4 + `".
         ?name gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?latlon.
         ?latlon gc:longitude ?long1.
@@ -196,17 +226,21 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-     FILTER(?d < 2000 && regex(?typeOfPitch,"Pitch") || regex(?typeOfPitch,"pitch"))
+     FILTER(?d < `+ this.selectedRange + ` && regex(?typeOfPitch,"Pitch") || regex(?typeOfPitch,"pitch"))
   }
   `
 
-    var encodedQuery4 = "query=" + encodeURIComponent(query4);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery4, "method": "POST", "mode": "cors" }).then(res => res.json());
-    console.log(this.data);
-    this.isQueryExecuted = true;
+      var encodedQuery4 = "query=" + encodeURIComponent(query4);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery4, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
   async query5clicked() {
-    var query5 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query5 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -240,17 +274,21 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 1000)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   `
 
-    var encodedQuery5 = "query=" + encodeURIComponent(query5);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery5, "method": "POST", "mode": "cors" }).then(res => res.json());
-    console.log(this.data);
-    this.isQueryExecuted = true;
+      var encodedQuery5 = "query=" + encodeURIComponent(query5);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery5, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
   async query6clicked() {
-    var query6 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query6 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -281,17 +319,21 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 1000)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   `
 
-    var encodedQuery6 = "query=" + encodeURIComponent(query6);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery6, "method": "POST", "mode": "cors" }).then(res => res.json());
-    // console.log(this.data);
-    this.isQueryExecuted = true;
+      var encodedQuery6 = "query=" + encodeURIComponent(query6);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery6, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
   async query7clicked() {
-    var query7 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query7 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -309,7 +351,7 @@ export class HomeComponent {
     { SELECT ?long1 ?lat1
         where {
               ?main a gc:SportsFacility.
-             ?main gc:name ?"`+ this.selectedSportsfacilities + `".
+             ?main gc:name ?"`+ this.selectedSportsfacilitiesquery7 + `".
            ?coord gc:hasCoordinates ?coordinates.
                 ?coordinates gc:hasLatLongCoordinates ?latlon.
              ?latlon gc:longitude ?long1.
@@ -321,18 +363,22 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 500)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   `
 
-    var encodedQuery7 = "query=" + encodeURIComponent(query7);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery7, "method": "POST", "mode": "cors" }).then(res => res.json());
-    // console.log(this.data);
-    this.isQueryExecuted = true;
+      var encodedQuery7 = "query=" + encodeURIComponent(query7);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery7, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
   async query8clicked() {
-    var query8 = `PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query8 = `PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -363,17 +409,22 @@ export class HomeComponent {
     BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
     BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
     BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < 2000)
+    FILTER(?d < `+ this.selectedRange + `)
   }
   `
 
-    var encodedQuery8 = "query=" + encodeURIComponent(query8);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery8, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
+      var encodedQuery8 = "query=" + encodeURIComponent(query8);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery8, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
   async query9clicked() {
-    var query9 = `PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query9 = `PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   
@@ -389,7 +440,7 @@ export class HomeComponent {
       { SELECT ?long1 ?lat1
           where {
             ?main a gc:SportsFacility.
-            ?main gc:name "`+ this.selectedSportsfacilities + `".
+            ?main gc:name "`+ this.selectedSportsfacilitiesquery9 + `".
           ?main gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?LatLong.
         ?LatLong gc:longitude ?long1.
@@ -401,16 +452,21 @@ export class HomeComponent {
       BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
       BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
       BIND((6373 *11 * ?c) AS ?d)
-      FILTER(?d < 2000)
+      FILTER(?d < `+ this.selectedRange + `)
   }
   `
 
-    var encodedQuery9 = "query=" + encodeURIComponent(query9);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery9, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
+      var encodedQuery9 = "query=" + encodeURIComponent(query9);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery9, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
   async query10clicked() {
-    var query10 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
+    if (this.selectedRange == -1) {
+      this.distanceError = true;
+    }
+    else {
+      var query10 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -440,12 +496,13 @@ export class HomeComponent {
       BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
       BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
       BIND((6373 *11 * ?c) AS ?d)
-      FILTER(?d < 2000)
+      FILTER(?d < `+ this.selectedRange + `)
   }
   `
-    var encodedQuery10 = "query=" + encodeURIComponent(query10);
-    this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery10, "method": "POST", "mode": "cors" }).then(res => res.json());
-    this.isQueryExecuted = true;
+      var encodedQuery10 = "query=" + encodeURIComponent(query10);
+      this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery10, "method": "POST", "mode": "cors" }).then(res => res.json());
+      this.isQueryExecuted = true;
+    }
   }
 
 }

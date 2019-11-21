@@ -2,21 +2,36 @@
   <div class="col-6" style="background-color:midnightblue">
     <div id="kick-start" class="card w3-light-grey">
       <div class="card-header">
-        <h1 class="card-title" style="align-items: center;">
+        <h1 class="card-title text-center">
           <dt style="align-items: center;">SPARQL QUERIES</dt>
         </h1>
       </div>
       <div class="card-content">
         <div class="card-body">
           <div class="card-text">
-            <ol>
+            <ol type="1">
+              <li class="row">
+                <div class="col-md-6">
+                  <b>Select a Distance Range</b>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-control" [(ngModel)]="selectedRange"
+                    (change)="selectedRange == -1 ? distanceError=true:distanceError=false">
+                    <option selected value="-1">--Select a Range--</option>
+                    <option *ngFor="let item of distanceranges" [value]="item">
+                      {{item}}
+                    </option>
+                  </select>
+                  <div style="color:red" *ngIf="distanceError">Select a Distance</div>
+                </div>
+              </li>
+              <div>&nbsp;</div>
               <li class="row">
                 <div class="col-md-6">
                   <b>Number of blue badge parking near</b>
                 </div>
                 <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="selectedPlayground"
-                    style="color:crimson;background-color:lightgrey;">
+                  <select class="form-control" [(ngModel)]="selectedPlaygroundquery1">
                     <option selected value="">--Select a Playground--</option>
                     <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
@@ -28,10 +43,10 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-10">
+                <div class="col-md-9">
                   <b>Location of blue badge parking where playground has certain type of</b>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <select class="form-control" [(ngModel)]="selectedSurface">
                     <option selected value="">--Surface--</option>
                     <option *ngFor="let item of surfaces" [value]="item">
@@ -48,7 +63,7 @@
                   <b>Number of blue badge parking around a</b>
                 </div>
                 <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilities">
+                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery3">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -64,7 +79,7 @@
                   <b>Type of pitches around a</b>
                 </div>
                 <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="selectedPlayground">
+                  <select class="form-control" [(ngModel)]="selectedPlaygroundquery4">
                     <option selected value="">--Select Playground--</option>
                     <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
@@ -124,7 +139,7 @@
                   <b>Playgrounds around a park</b>
                 </div>
                 <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilities">
+                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery7">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -156,7 +171,7 @@
                   <b> Location of blue badge parking around a</b>
                 </div>
                 <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilities">
+                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery9">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -193,7 +208,7 @@
   <div class="col-6" style="background-color:firebrick">
     <div id="simple-card" class="card">
       <div class="card-header">
-        <h1 class="card-title">
+        <h1 class="card-title text-center">
           <dt>Output</dt>
         </h1>
       </div>
