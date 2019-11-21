@@ -32,10 +32,10 @@ export class HomeComponent {
   selectedEquipment: string = "";
   selectedSpecialneeds: string = "";
 
-
+  currentQuery: string;
   isQueryExecuted: boolean = false;
   objectKeys = Object.keys;
-
+  isShown: boolean = false;
   // questions = [
   //   {
   //     id: 1,
@@ -48,13 +48,18 @@ export class HomeComponent {
   distanceError = false;
   constructor() {
   }
+  toggleShow() {
 
+    this.isShown = !this.isShown;
+
+  }
   async query1clicked() {
 
     if (this.selectedRange == -1) {
       this.distanceError = true;
     }
     else {
+
       var query1 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
@@ -87,7 +92,7 @@ export class HomeComponent {
     FILTER(?d < `+ this.selectedRange + `)
   }
   GROUP BY ?location`
-
+      this.currentQuery = query1;
       var encodedQuery1 = "query=" + encodeURIComponent(query1);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery1, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -135,6 +140,7 @@ export class HomeComponent {
   
   }
   `
+      this.currentQuery = query2;
       var encodedQuery2 = "query=" + encodeURIComponent(query2);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery2, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -182,7 +188,7 @@ export class HomeComponent {
   }
   GROUP BY ?location 
   `
-
+      this.currentQuery = query3;
       var encodedQuery3 = "query=" + encodeURIComponent(query3);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery3, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -229,7 +235,7 @@ export class HomeComponent {
      FILTER(?d < `+ this.selectedRange + ` && regex(?typeOfPitch,"Pitch") || regex(?typeOfPitch,"pitch"))
   }
   `
-
+      this.currentQuery = query4;
       var encodedQuery4 = "query=" + encodeURIComponent(query4);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery4, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -277,7 +283,7 @@ export class HomeComponent {
     FILTER(?d < `+ this.selectedRange + `)
   }
   `
-
+      this.currentQuery = query5;
       var encodedQuery5 = "query=" + encodeURIComponent(query5);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery5, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -322,7 +328,7 @@ export class HomeComponent {
     FILTER(?d < `+ this.selectedRange + `)
   }
   `
-
+      this.currentQuery = query6;
       var encodedQuery6 = "query=" + encodeURIComponent(query6);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery6, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -366,7 +372,7 @@ export class HomeComponent {
     FILTER(?d < `+ this.selectedRange + `)
   }
   `
-
+      this.currentQuery = query7;
       var encodedQuery7 = "query=" + encodeURIComponent(query7);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery7, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -412,7 +418,7 @@ export class HomeComponent {
     FILTER(?d < `+ this.selectedRange + `)
   }
   `
-
+      this.currentQuery = query8;
       var encodedQuery8 = "query=" + encodeURIComponent(query8);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery8, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -455,7 +461,7 @@ export class HomeComponent {
       FILTER(?d < `+ this.selectedRange + `)
   }
   `
-
+      this.currentQuery = query9;
       var encodedQuery9 = "query=" + encodeURIComponent(query9);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery9, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;
@@ -499,6 +505,7 @@ export class HomeComponent {
       FILTER(?d < `+ this.selectedRange + `)
   }
   `
+      this.currentQuery = query10;
       var encodedQuery10 = "query=" + encodeURIComponent(query10);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery10, "method": "POST", "mode": "cors" }).then(res => res.json());
       this.isQueryExecuted = true;

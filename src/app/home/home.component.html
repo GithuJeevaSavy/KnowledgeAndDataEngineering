@@ -3,7 +3,7 @@
     <div id="kick-start" class="card w3-light-grey">
       <div class="card-header">
         <h1 class="card-title text-center">
-          <dt style="align-items: center;">SPARQL QUERIES</dt>
+          <dt style="align-items: center;">QUESTIONS</dt>
         </h1>
       </div>
       <div class="card-content">
@@ -12,7 +12,7 @@
             <ol type="1">
               <li class="row">
                 <div class="col-md-6">
-                  <b>Select a Distance Range</b>
+                  <b>Select a Distance Range (in Meters)</b>
                 </div>
                 <div class="col-md-6">
                   <select class="form-control" [(ngModel)]="selectedRange"
@@ -206,34 +206,57 @@
     </div>
   </div>
   <div class="col-6" style="background-color:firebrick">
+
     <div id="simple-card" class="card">
       <div class="card-header">
         <h1 class="card-title text-center">
-          <dt>Output</dt>
+          <dt>Sparql Query</dt>
         </h1>
       </div>
       <div class="card-content">
-        <div class="card-body">
-          <div class="card-text">
-            <table class="table table-striped ">
-              <thead>
-                <th *ngFor="let header of data.head.vars">
-                  {{header | uppercase}}
-                </th>
-              </thead>
-              <tbody *ngIf="data.results.bindings.length === 0 && isQueryExecuted">
-                <tr>No records found</tr>
-              </tbody>
-              <tbody *ngIf="data.results.bindings.length > 0">
-                <tr *ngFor="let d of data.results.bindings">
-                  <td *ngFor="let k of objectKeys(d)">{{d[k].value}}</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="card-body ">
+          <div class="text-center">
+            <button class="btn btn-outline-danger " (click)="toggleShow()" type="checkbox">Show/Hide Sparql
+              Query</button>
           </div>
+        
+        <div class="angular-with-newlines" style="white-space: pre-wrap;" *ngIf="isShown">
+          {{currentQuery}}
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="simple-card" class="card">
+    <div class="card-header">
+      <h1 class="card-title text-center">
+        <dt>Output</dt>
+      </h1>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <div class="card-text">
+          <table class="table table-striped ">
+            <thead>
+              <th *ngFor="let header of data.head.vars">
+                {{header | uppercase}}
+              </th>
+            </thead>
+            <tbody *ngIf="data.results.bindings.length === 0 && isQueryExecuted">
+              <tr>No records found</tr>
+            </tbody>
+            <tbody *ngIf="data.results.bindings.length > 0">
+              <tr *ngFor="let d of data.results.bindings">
+                <td *ngFor="let k of objectKeys(d)">{{d[k].value}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 </div>
