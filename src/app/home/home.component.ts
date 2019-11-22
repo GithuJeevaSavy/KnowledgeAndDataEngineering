@@ -25,7 +25,6 @@ export class HomeComponent {
   selectedPlaygroundquery7: string = "";
   selectedSurface: string = "";
   selectedSportsfacilitiesquery3: string = "";
-  // selectedSportsfacilitiesquery7: string = "";
   selectedSportsfacilitiesquery9: string = "";
   selectedToiletfacilities: string = "";
   selectedParking: string = "";
@@ -37,15 +36,6 @@ export class HomeComponent {
   isQueryExecuted: boolean = false;
   objectKeys = Object.keys;
   isShown: boolean = false;
-  // questions = [
-  //   {
-  //     id: 1,
-  //     question: "",
-  //     dropdownValues: this.pitches
-  //   },
-  //   {}
-
-  // ];
   distanceError = false;
   constructor() {
   }
