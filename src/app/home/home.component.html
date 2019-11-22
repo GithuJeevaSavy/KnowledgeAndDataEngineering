@@ -1,5 +1,5 @@
 <div class="row m-0">
-  <div class="col-6" style="background-color:midnightblue">
+  <div class="col-7" style="background-color:midnightblue">
     <div id="kick-start" class="card w3-light-grey">
       <div class="card-header">
         <h1 class="card-title text-center">
@@ -11,11 +11,11 @@
           <div class="card-text">
             <ol type="1">
               <li class="row">
-                <div class="col-md-6">
+                <div >
                   <b>Select a Distance Range (in Meters)</b>
                 </div>
-                <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="selectedRange"
+                <div class="col-md-3">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedRange"
                     (change)="selectedRange == -1 ? distanceError=true:distanceError=false">
                     <option selected value="-1">--Select a Range--</option>
                     <option *ngFor="let item of distanceranges" [value]="item">
@@ -27,11 +27,11 @@
               </li>
               <div>&nbsp;</div>
               <li class="row">
-                <div class="col-md-6">
-                  <b>Number of blue badge parking near</b>
+                <div >
+                  <b>How many blue-badge parking locations are available near</b>
                 </div>
-                <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="selectedPlaygroundquery1">
+                <div style="padding-left: 15px;">
+                  <select style="border-color:black;" class="form-control"  [(ngModel)]="selectedPlaygroundquery1">
                     <option selected value="">--Select a Playground--</option>
                     <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
@@ -39,16 +39,22 @@
                   </select>
                 </div>
               </li>
-              <button class="btn btn-outline-danger" (click)="query1clicked()">
-                Execute
-              </button>
+              <tr>
+                <td style="padding-right: 20px;">
+                    <button  class="btn btn-outline-danger" (click)="query1clicked()">
+                        Execute
+                      </button>
+                </td>
+                  
+              </tr>
+              
               <li class="row">
-                <div class="col-md-9">
-                  <b>Location of blue badge parking where playground has certain type of</b>
+                <div >
+                  <b>List all blue badge parking locations near a playground with</b>
                 </div>
-                <div class="col-md-3">
-                  <select class="form-control" [(ngModel)]="selectedSurface">
-                    <option selected value="">--Surface--</option>
+                <div class="col-md-4">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSurface">
+                    <option selected value="">--Select a Surface--</option>
                     <option *ngFor="let item of surfaces" [value]="item">
                       {{item}}
                     </option>
@@ -59,11 +65,11 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-7">
-                  <b>Number of blue badge parking around a</b>
+                <div>
+                  <b>How many blue badge parking locations are present near</b>
                 </div>
-                <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery3">
+                <div class="col-md-4">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSportsfacilitiesquery3">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -75,11 +81,11 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-4">
-                  <b>Type of pitches around a</b>
+                <div>
+                  <b>List all the types of pitches close to</b>
                 </div>
-                <div class="col-md-6">
-                  <select class="form-control" [(ngModel)]="selectedPlaygroundquery4">
+                <div class="col-md-5">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedPlaygroundquery4">
                     <option selected value="">--Select Playground--</option>
                     <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
@@ -91,20 +97,33 @@
                 Execute
               </button>
               <li class="row">
-
+                <div>
+                  <tr>
+                    <td >
+                        <b>List</b>
+                    </td>
+                  </tr>
+                  
+                </div>
                 <div class="col-md-3">
-                  <select class="form-control" [(ngModel)]="selectedPitch">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedPitch">
                     <option selected value="">--Pitches--</option>
                     <option *ngFor="let item of pitches" [value]="item">
                       {{item}}
                     </option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <b>around playground with</b>
+                <div>
+                  <tr>
+<td>
+    <b>near a playground with parking location</b>
+</td>
+                </tr>
+                  
                 </div>
-                <div class="col-md-4">
-                  <select class="form-control" [(ngModel)]="selectedParking">
+                <div style="padding-bottom: 10px; padding-left: 15px;">
+                  
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedParking">
                     <option selected value="">--Parking Area--</option>
                     <option *ngFor="let item of parking" [value]="item">
                       {{item}}
@@ -112,34 +131,35 @@
                   </select>
                 </div>
               </li>
-              <button class="btn btn-outline-danger" (click)="query5clicked()">
+              <button  class="btn btn-outline-danger" (click)="query5clicked()">
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-3">
-                  <b> Playgrounds with</b>
+                <div >
+                  <b> List the playgrounds that have</b>
                 </div>
                 <div class="col-md-3">
-                  <select class="form-control" [(ngModel)]="selectedEquipment">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedEquipment">
                     <option selected value="">Equipments</option>
                     <option *ngFor="let item of equipments" [value]="item">
                       {{item}}
                     </option>
                   </select>
                 </div>
-                <div class="col-md-6">
-                  <b>with at least one blue badge parking</b>
+                <div>
+                  <b>and at least one blue badge parking near it.
+                  </b>
                 </div>
               </li>
               <button class="btn btn-outline-danger" (click)="query6clicked()">
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-5">
-                  <b>Playgrounds around a park</b>
+                <div>
+                  <b>List all the playgrounds close to</b>
                 </div>
-                <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery7">
+                <div class="col-md-4">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSportsfacilitiesquery7">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -151,11 +171,11 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-9">
-                  <b>Number of certain pitches around playground which have</b>
+                <div>
+                  <b>List the types of sports facility that is near a playground with</b>
                 </div>
-                <div class="col-md-3">
-                  <select class="form-control" [(ngModel)]="selectedToiletfacilities">
+                <div style="padding-left: 15px;">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedToiletfacilities">
                     <option selected value="">Toilet Facility</option>
                     <option *ngFor="let item of toiletfacilities" [value]="item">
                       {{item}}
@@ -167,11 +187,11 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-7">
-                  <b> Location of blue badge parking around a</b>
+                <div>
+                  <b> List blue badge parking locations around</b>
                 </div>
-                <div class="col-md-5">
-                  <select class="form-control" [(ngModel)]="selectedSportsfacilitiesquery9">
+                <div class="col-md-4">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSportsfacilitiesquery9">
                     <option selected value="">--Select Sports Facility--</option>
                     <option *ngFor="let item of sportsfacilities" [value]="item">
                       {{item}}
@@ -183,11 +203,11 @@
                 Execute
               </button>
               <li class="row">
-                <div class="col-md-8">
-                  <b>Name of sports facility around a playground with </b>
+                <div>
+                  <b>List the names of sports facilities close to a playground with </b>
                 </div>
-                <div class="col-md-4">
-                  <select class="form-control" [(ngModel)]="selectedSpecialneeds">
+                <div class="col-md-3">
+                  <select  style="border-color:black;" class="form-control" [(ngModel)]="selectedSpecialneeds">
                     <option selected value="">--Special Needs--</option>
                     <option *ngFor="let item of specialneeds" [value]="item">
                       {{item}}
@@ -205,7 +225,7 @@
       </div>
     </div>
   </div>
-  <div class="col-6" style="background-color:firebrick">
+  <div class="col-5" style="background-color:firebrick">
 
     <div id="simple-card" class="card">
       <div class="card-header">
@@ -219,44 +239,44 @@
             <button class="btn btn-outline-danger " (click)="toggleShow()" type="checkbox">Show/Hide Sparql
               Query</button>
           </div>
-        
-        <div class="angular-with-newlines" style="white-space: pre-wrap;" *ngIf="isShown">
-          {{currentQuery}}
 
-        </div>
+          <div class="angular-with-newlines" style="white-space: pre-wrap;" *ngIf="isShown">
+            {{currentQuery}}
 
-      </div>
-    </div>
-  </div>
+          </div>
 
-  <div id="simple-card" class="card">
-    <div class="card-header">
-      <h1 class="card-title text-center">
-        <dt>Output</dt>
-      </h1>
-    </div>
-    <div class="card-content">
-      <div class="card-body">
-        <div class="card-text">
-          <table class="table table-striped ">
-            <thead>
-              <th *ngFor="let header of data.head.vars">
-                {{header | uppercase}}
-              </th>
-            </thead>
-            <tbody *ngIf="data.results.bindings.length === 0 && isQueryExecuted">
-              <tr>No records found</tr>
-            </tbody>
-            <tbody *ngIf="data.results.bindings.length > 0">
-              <tr *ngFor="let d of data.results.bindings">
-                <td *ngFor="let k of objectKeys(d)">{{d[k].value}}</td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
+
+    <div id="simple-card" class="card">
+      <div class="card-header">
+        <h1 class="card-title text-center">
+          <dt>Output</dt>
+        </h1>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <div class="card-text">
+            <table class="table table-striped ">
+              <thead>
+                <th *ngFor="let header of data.head.vars">
+                  {{header | uppercase}}
+                </th>
+              </thead>
+              <tbody *ngIf="data.results.bindings.length === 0 && isQueryExecuted">
+                <tr>No records found</tr>
+              </tbody>
+              <tbody *ngIf="data.results.bindings.length > 0">
+                <tr *ngFor="let d of data.results.bindings">
+                  <td *ngFor="let k of objectKeys(d)">{{d[k].value}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
 </div>

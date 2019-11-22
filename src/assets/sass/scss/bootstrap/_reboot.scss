@@ -13,6 +13,7 @@ body {
     background: #333333;
     &, .form-control {
       color: $white;
+      
     }
     .modal,
     .panel-default,
@@ -21,6 +22,8 @@ body {
       .form-control {
         background-color: initial;
         color: initial;
+        
+        
       }
     }
 
