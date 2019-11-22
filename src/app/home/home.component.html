@@ -11,7 +11,7 @@
           <div class="card-text">
             <ol type="1">
               <li class="row">
-                <div >
+                <div>
                   <b>Select a Distance Range (in Meters)</b>
                 </div>
                 <div class="col-md-3">
@@ -27,11 +27,11 @@
               </li>
               <div>&nbsp;</div>
               <li class="row">
-                <div >
+                <div>
                   <b>How many blue-badge parking locations are available near</b>
                 </div>
                 <div style="padding-left: 15px;">
-                  <select style="border-color:black;" class="form-control"  [(ngModel)]="selectedPlaygroundquery1">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedPlaygroundquery1">
                     <option selected value="">--Select a Playground--</option>
                     <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
@@ -40,13 +40,13 @@
                 </div>
               </li>
               <div class="row">
-                    <button  class="btn btn-outline-danger" (click)="query1clicked()">
-                        Execute
-                      </button>
+                <button class="btn btn-outline-danger" (click)="query1clicked()">
+                  Execute
+                </button>
               </div>
-              
+
               <li class="row">
-                <div >
+                <div>
                   <b>List all blue badge parking locations near a playground with</b>
                 </div>
                 <div class="col-md-4">
@@ -59,10 +59,10 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query2clicked()">
-                Execute
-              </button>
-            </div>
+                <button class="btn btn-outline-danger" (click)="query2clicked()">
+                  Execute
+                </button>
+              </div>
               <li class="row">
                 <div>
                   <b>How many blue badge parking locations are present near</b>
@@ -77,10 +77,10 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query3clicked()">
-                Execute
-              </button>
-            </div>
+                <button class="btn btn-outline-danger" (click)="query3clicked()">
+                  Execute
+                </button>
+              </div>
               <li class="row">
                 <div>
                   <b>List all the types of pitches close to</b>
@@ -95,18 +95,18 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query4clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query4clicked()">
+                  Execute
+                </button>
               </div>
               <li class="row">
                 <div>
                   <tr>
-                    <td >
-                        <b>List</b>
+                    <td>
+                      <b>List</b>
                     </td>
                   </tr>
-                  
+
                 </div>
                 <div class="col-md-3">
                   <select style="border-color:black;" class="form-control" [(ngModel)]="selectedPitch">
@@ -118,14 +118,14 @@
                 </div>
                 <div>
                   <tr>
-<td>
-    <b>near a playground with parking location</b>
-</td>
-                </tr>
-                  
+                    <td>
+                      <b>near a playground with parking location</b>
+                    </td>
+                  </tr>
+
                 </div>
                 <div style="padding-bottom: 10px; padding-left: 15px;">
-                  
+
                   <select style="border-color:black;" class="form-control" [(ngModel)]="selectedParking">
                     <option selected value="">--Parking Area--</option>
                     <option *ngFor="let item of parking" [value]="item">
@@ -135,12 +135,12 @@
                 </div>
               </li>
               <div class="row">
-              <button  class="btn btn-outline-danger" (click)="query5clicked()">
-                Execute
-              </button>
-            </div>
+                <button class="btn btn-outline-danger" (click)="query5clicked()">
+                  Execute
+                </button>
+              </div>
               <li class="row">
-                <div >
+                <div>
                   <b> List the playgrounds that have</b>
                 </div>
                 <div class="col-md-3">
@@ -157,27 +157,27 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query6clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query6clicked()">
+                  Execute
+                </button>
               </div>
               <li class="row">
                 <div>
-                  <b>List all the playgrounds close to</b>
+                  <b>List all the Sports Facility close to</b>
                 </div>
                 <div class="col-md-4">
-                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSportsfacilitiesquery7">
-                    <option selected value="">--Select Sports Facility--</option>
-                    <option *ngFor="let item of sportsfacilities" [value]="item">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedPlaygroundquery7">
+                    <option selected value="">--Select Playground--</option>
+                    <option *ngFor="let item of playgrounds" [value]="item">
                       {{item}}
                     </option>
                   </select>
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query7clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query7clicked()">
+                  Execute
+                </button>
               </div>
               <li class="row">
                 <div>
@@ -193,9 +193,9 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query8clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query8clicked()">
+                  Execute
+                </button>
               </div>
               <li class="row">
                 <div>
@@ -211,16 +211,16 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query9clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query9clicked()">
+                  Execute
+                </button>
               </div>
               <li class="row">
                 <div>
                   <b>List the names of sports facilities close to a playground with </b>
                 </div>
                 <div class="col-md-3">
-                  <select  style="border-color:black;" class="form-control" [(ngModel)]="selectedSpecialneeds">
+                  <select style="border-color:black;" class="form-control" [(ngModel)]="selectedSpecialneeds">
                     <option selected value="">--Special Needs--</option>
                     <option *ngFor="let item of specialneeds" [value]="item">
                       {{item}}
@@ -229,9 +229,9 @@
                 </div>
               </li>
               <div class="row">
-              <button class="btn btn-outline-danger" (click)="query10clicked()">
-                Execute
-              </button>
+                <button class="btn btn-outline-danger" (click)="query10clicked()">
+                  Execute
+                </button>
               </div>
             </ol>
 

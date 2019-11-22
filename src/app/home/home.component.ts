@@ -22,9 +22,10 @@ export class HomeComponent {
   selectedRange = -1;
   selectedPlaygroundquery1: string = "";
   selectedPlaygroundquery4: string = "";
+  selectedPlaygroundquery7: string = "";
   selectedSurface: string = "";
   selectedSportsfacilitiesquery3: string = "";
-  selectedSportsfacilitiesquery7: string = "";
+  // selectedSportsfacilitiesquery7: string = "";
   selectedSportsfacilitiesquery9: string = "";
   selectedToiletfacilities: string = "";
   selectedParking: string = "";
@@ -64,7 +65,8 @@ export class HomeComponent {
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  SELECT  DISTINCT ?location (SUM(DISTINCT ?sumOfSpaces) AS ?number)
+  SELECT  DISTINCT (?location AS ?Parking_location) (SUM(DISTINCT ?sumOfSpaces) AS 
+  ?Number_of_spaces)
   where{
         ?coord a gc:BlueBadgeParking.
         ?coord gc:hasCoordinates ?coordinates.
@@ -110,8 +112,7 @@ export class HomeComponent {
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
-  SELECT  DISTINCT ?location ?name
-  where{
+  SELECT  DISTINCT (?location AS ?Parking_location) (?name AS ?Playground_name)  where{
       ?coord a gc:BlueBadgeParking.
         ?coord gc:hasCoordinates ?coordinates.
        ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -157,8 +158,8 @@ export class HomeComponent {
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
-  SELECT    DISTINCT ?location (SUM(DISTINCT ?sumOfSpaces) AS ?number)
-  where{
+  SELECT    DISTINCT (?location AS ?Parking_location) (SUM(DISTINCT ?sumOfSpaces) 
+  AS ?Number_of_spaces)  where{
        ?coord a gc:BlueBadgeParking.
         ?coord gc:hasCoordinates ?coordinates.
        ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -206,8 +207,7 @@ export class HomeComponent {
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
-  SELECT  DISTINCT ?typeOfPitch 
-  where{
+  SELECT  DISTINCT (?typeOfPitch AS ?Type_of_pitch)   where{
         ?main a gc:SportsFacility.
       ?main gc:hasPitchType ?type.
         ?type rdfs:label ?typeOfPitch.
@@ -232,7 +232,7 @@ export class HomeComponent {
         BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
         BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
         BIND((6373 *11 * ?c) AS ?d)
-     FILTER(?d < `+ this.selectedRange + ` && regex(?typeOfPitch,"Pitch") || regex(?typeOfPitch,"pitch"))
+     FILTER(?d < `+ this.selectedRange + ` && regex(?typeOfPitch,"Pitch","i"))
   }
   `
       this.currentQuery = query4;
@@ -252,8 +252,7 @@ export class HomeComponent {
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
   
-  SELECT  DISTINCT ?name 
-  where{
+  SELECT  DISTINCT (?name AS ?Playground_name)  where{
      ?main a gc:SportsFacility.
       ?main gc:hasPitchType ?type.
         ?type rdfs:label "`+ this.selectedPitch + `".
@@ -265,8 +264,8 @@ export class HomeComponent {
     { SELECT ?long1 ?lat1 ?name
         where {
         ?main a gc:Playground.
-        ?main gc:hasPlaygroundParking ?surface.
-        ?surface rdfs:label "`+ this.selectedParking + `".
+        ?main gc:hasPlaygroundParking ?parking.
+        ?parking rdfs:label "`+ this.selectedParking + `".
         ?main gc:name ?name.
         ?main gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -299,8 +298,9 @@ export class HomeComponent {
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
-  SELECT DISTINCT ?nameBasket ?location
-  where{
+  SELECT DISTINCT (?nameBasket AS ?Playground_name) (?location AS 
+    ?Parking_location)  
+    where{
       ?main a gc:Playground.
        ?main gc:hasPlaygroundEquipment ?hoop.
       ?hoop rdfs:label "`+ this.selectedEquipment + `".
@@ -340,38 +340,39 @@ export class HomeComponent {
     }
     else {
       var query7 = `PREFIX math:<http://www.w3.org/2005/xpath-functions/math#>
-  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-  PREFIX gc:<http://www.semanticweb.org/galway-city/>
-  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  PREFIX play: <http://uriplay.org/spec/ontology/#>
-  
-  SELECT  DISTINCT ?nameBasket 
-  where{
-      ?main a gc:Playground.
-       ?main gc:name ?nameBasket.
-     ?coord gc:hasCoordinates ?coordinates.
-     ?coordinates gc:hasLatLongCoordinates ?latlon.
-      ?latlon gc:longitude ?long.
-       ?latlon gc:latitude ?lat.
-    
-    { SELECT ?long1 ?lat1
-        where {
-              ?main a gc:SportsFacility.
-             ?main gc:name ?"`+ this.selectedSportsfacilitiesquery7 + `".
-           ?coord gc:hasCoordinates ?coordinates.
-                ?coordinates gc:hasLatLongCoordinates ?latlon.
-             ?latlon gc:longitude ?long1.
-             ?latlon gc:latitude ?lat1.
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      PREFIX gc:<http://www.semanticweb.org/galway-city/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      
+      SELECT  DISTINCT (?nameBasket AS ?Sports_facility_name)
+      where{
+          ?main a gc:SportsFacility.
+                 ?main gc:name ?nameBasket.
+               ?coord gc:hasCoordinates ?coordinates.
+                    ?coordinates gc:hasLatLongCoordinates ?latlon.
+                 ?latlon gc:longitude ?long.
+                 ?latlon gc:latitude ?lat.
+        
+        { SELECT ?long1 ?lat1
+            where {
+            
+            ?main a gc:Playground.
+           ?main gc:name "`+ this.selectedPlaygroundquery7 + `".
+         ?coord gc:hasCoordinates ?coordinates.
+         ?coordinates gc:hasLatLongCoordinates ?latlon.
+          ?latlon gc:longitude ?long1.
+           ?latlon gc:latitude ?lat1.
+                  
+          }
+        }
+            BIND(xsd:decimal(?long1) - xsd:decimal(?long) AS ?dlon)
+            BIND(xsd:decimal(?lat1) - xsd:decimal(?lat) AS ?dlat)
+            BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
+            BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
+            BIND((6373 *11 * ?c) AS ?d)
+        FILTER(?d < `+ this.selectedRange + `)
       }
-    }
-        BIND(xsd:decimal(?long1) - xsd:decimal(?long) AS ?dlon)
-        BIND(xsd:decimal(?lat1) - xsd:decimal(?lat) AS ?dlat)
-        BIND(math:pow(math:sin(?dlat/2),2) + math:cos(xsd:decimal(?lat1)) * math:cos(xsd:decimal(?lat)) * math:pow(math:sin(?dlon/2),2) AS ?a)
-        BIND(2 *  math:atan2(math:sqrt(?a),math:sqrt(1-?a)) AS ?c)
-        BIND((6373 *11 * ?c) AS ?d)
-    FILTER(?d < `+ this.selectedRange + `)
-  }
-  `
+      `
       this.currentQuery = query7;
       var encodedQuery7 = "query=" + encodeURIComponent(query7);
       this.data = await fetch("http://localhost:3030/dataset/sparql", { "credentials": "include", "headers": { "accept": "application/sparql-results+json,*/*;q=0.9", "accept-language": "en-US,en;q=0.9", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "sec-fetch-mode": "cors", "sec-fetch-site": "same-origin", "x-requested-with": "XMLHttpRequest" }, "referrer": "http://localhost:3030/dataset.html?tab=query&ds=/ds", "referrerPolicy": "no-referrer-when-downgrade", "body": encodedQuery7, "method": "POST", "mode": "cors" }).then(res => res.json());
@@ -389,8 +390,8 @@ export class HomeComponent {
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   
-  SELECT DISTINCT ?type
-  where{
+  SELECT DISTINCT (?type AS ?Type_of_Facility) ?playground_name
+    where{
       ?main a gc:SportsFacility.
       ?main gc:hasCoordinates ?coordinates.
       ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -434,8 +435,8 @@ export class HomeComponent {
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   
-  SELECT  DISTINCT ?location
-  where{
+  SELECT  DISTINCT (?location AS ?Parking_location)
+    where{
       ?name a gc:BlueBadgeParking.
      ?name gc:hasCoordinates ?coordinates.
        ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -476,10 +477,9 @@ export class HomeComponent {
   PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   PREFIX gc:<http://www.semanticweb.org/galway-city/>
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  PREFIX play: <http://uriplay.org/spec/ontology/#>
   
-  SELECT  DISTINCT ?name
-  where{
+  SELECT  DISTINCT (?name AS ?Sports_facility_name) ?playground_name
+    where{
       ?main a gc:SportsFacility.
      ?main gc:hasCoordinates ?coordinates.
        ?coordinates gc:hasLatLongCoordinates ?latlon.
@@ -487,10 +487,11 @@ export class HomeComponent {
        ?latlon gc:latitude ?lat.
        ?main gc:name ?name
    
-      { SELECT ?long1 ?lat1 ?needs
-          where {
+       { SELECT ?long1 ?lat1 ?playground_name
+        where {
           ?s a gc:Playground.
             ?s gc:specialNeedsEquipment "`+ this.selectedSpecialneeds + `".
+            ?s gc:name ?playground_name.
           ?s gc:hasCoordinates ?coordinates.
         ?coordinates gc:hasLatLongCoordinates ?LatLong.
         ?LatLong gc:longitude ?long1.
